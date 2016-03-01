@@ -2,6 +2,7 @@ require 'rubygems'
 require 'selenium-webdriver'
 require 'test/unit'
 require 'capybara'
+require 'cucumber'
 
 class MyTest < Test::Unit::TestCase
 
