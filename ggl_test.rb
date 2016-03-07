@@ -17,6 +17,26 @@ class GmailLoginPage
     expect(page).to have_button('next')
   end
 
+  def validate_after_email
+    expect(page).to have_field('Passwd')
+  end
+
+  def submit_email(email)
+    fill_in 'Email', :with => email
+  end
+
+  def submit_password(passwd)
+    fill_in 'Passwd', :with => passwd
+  end
+
+  def click_next
+    click_button 'next'
+  end
+
+  def click_signin
+    click_button 'signIn'
+  end
+
 end
 
 
