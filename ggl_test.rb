@@ -6,6 +6,20 @@ require 'capybara/rspec'
 GMAIL_USER = ENV['GMAIL_USER']
 GMAIL_PASSWD = ENV['GMAIL_PASSWD']
 
+
+class GmailLoginPage
+  include Capybara::DSL
+  include RSpec::Matchers
+
+  def validate_on_page
+    expect(page).to have_selector('.card')
+    expect(page).to have_field('Email')
+    expect(page).to have_button('next')
+  end
+
+end
+
+
 describe 'the gmail email', :type => :feature do
 
   before(:all) do
