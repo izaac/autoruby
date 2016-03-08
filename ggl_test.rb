@@ -22,6 +22,10 @@ class GmailLoginPage
     expect(page).to have_field('Passwd')
   end
 
+  def validate_bad_email
+    expect(page).to have_selector('#errormsg_0_Email', visible: true)
+  end
+
   def submit_email(email)
     fill_in 'Email', :with => email
   end
@@ -44,7 +48,7 @@ end
 describe 'the browser should open the gmail login page', :type => :feature do
   drive = GmailLoginPage.new
 
-  before(:all) do
+  before(:each) do
     Capybara.current_driver = :selenium
     Capybara.app_host = 'https://gmail.com'
     Capybara.run_server = false
@@ -63,6 +67,18 @@ describe 'the browser should open the gmail login page', :type => :feature do
 
     drive.validate_after_email
     drive.submit_password GMAIL_PASSWD
+  end
+
+  it 'should display: doesnt recognize email' do
+
+    visit '/'
+    drive.validate_on_page
+
+    drive.submit_email 'non.existing@email.com'
+    drive.click_next
+
+    drive.validate_bad_email
+
   end
 
   after(:each) do
