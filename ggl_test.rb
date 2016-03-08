@@ -12,6 +12,7 @@ class GmailLoginPage
   include RSpec::Matchers
 
   def validate_on_page
+    expect(page).to have_title 'Gmail'
     expect(page).to have_selector('.card')
     expect(page).to have_field('Email')
     expect(page).to have_button('next')
@@ -40,32 +41,28 @@ class GmailLoginPage
 end
 
 
-describe 'the gmail email', :type => :feature do
+describe 'the browser should open the gmail login page', :type => :feature do
+  drive = GmailLoginPage.new
 
   before(:all) do
     Capybara.current_driver = :selenium
     Capybara.app_host = 'https://gmail.com'
     Capybara.run_server = false
+
   end
 
-  it 'should open the gmail login page' do
+  it 'should fill in the email and password fields and login' do
+
     visit '/'
-    expect(page).to have_title 'Gmail'
-    if page.has_link?('gmail-sign-in')
-      page.click_link('gmail-sign-in')
-    end
+    drive.validate_on_page
 
     File.write('tmp.html', page.body)
+    
+    drive.submit_email GMAIL_USER
+    drive.click_next
 
-    within('#gaia_loginform') do
-      fill_in 'Email', :with => GMAIL_USER
-      click_on 'next'
-    end
-
-    if find_button('signIn')
-      fill_in 'Passwd', :with => GMAIL_PASSWD
-      click_on 'signIn'
-    end
+    drive.validate_after_email
+    drive.submit_password GMAIL_PASSWD
   end
 
   after(:each) do
