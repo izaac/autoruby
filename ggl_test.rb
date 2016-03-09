@@ -26,6 +26,10 @@ class GmailLoginPage
     expect(page).to have_selector('#errormsg_0_Email', visible: true)
   end
 
+  def validate_bad_passwd
+    expect(page).to have_selector('#errormsg_0_Passwd', visible: true)
+  end
+
   def submit_email(email)
     fill_in 'Email', :with => email
   end
@@ -67,6 +71,7 @@ describe 'the browser should open the gmail login page', :type => :feature do
 
     drive.validate_after_email
     drive.submit_password GMAIL_PASSWD
+
   end
 
   it 'should display: doesnt recognize email' do
@@ -78,6 +83,23 @@ describe 'the browser should open the gmail login page', :type => :feature do
     drive.click_next
 
     drive.validate_bad_email
+
+  end
+
+  it 'should display: email and passwoed do not match' do
+
+    visit '/'
+    drive.validate_on_page
+
+
+    drive.submit_email GMAIL_USER
+    drive.click_next
+
+    drive.validate_after_email
+    drive.submit_password 'bad_passwd!'
+    
+    drive.click_signin
+    drive.validate_bad_passwd
 
   end
 
