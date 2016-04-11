@@ -1,6 +1,5 @@
-class GmailLoginPage
-  include Capybara::DSL
-  include RSpec::Matchers
+require_relative 'gmail_base_page'
+class GmailLoginPage < GmailBasePage
 
   def validate_on_page
     expect(page).to have_title 'Gmail'
