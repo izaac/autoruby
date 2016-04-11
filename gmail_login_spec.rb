@@ -23,7 +23,7 @@ describe 'the browser should open the gmail login page', :type => :feature do
     drive.validate_on_page
 
     File.write('tmp.html', page.body)
-    
+
     drive.submit_email GMAIL_USER
     drive.click_next
 
@@ -55,7 +55,7 @@ describe 'the browser should open the gmail login page', :type => :feature do
 
     drive.validate_after_email
     drive.submit_password 'bad_passwd!'
-    
+
     drive.click_signin
     drive.validate_bad_passwd
 
